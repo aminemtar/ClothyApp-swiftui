@@ -7,10 +7,8 @@
 
 import SwiftUI
 import UIKit
-import RiveRuntime
 
 struct ContentView: View {
-    let button = RiveViewModel(fileName: "button")
     @State var showsignin = false
     @State var forgetpw = false
     @State var showSignUp = false
@@ -413,26 +411,27 @@ struct ContentView: View {
 
             Spacer()
 
-            button.view()
-                .frame(width: 236, height: 64)
-                .overlay(
-                    Label("Start with Clothy", systemImage: "arrow.forward")
-                        .offset(x: 4, y: 4)
-                        .font(.headline)
-                )
-                .background(
-                    Color.black
-                        .cornerRadius(30)
-                        .blur(radius: 10)
-                        .opacity(0.3)
-                        .offset(y: 10)
-                )
-                .onTapGesture {
-                    button.play(animationName: "active")
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
-                        withAnimation(.spring()) { showsignin = true }
-                    }
+            Button {
+                withAnimation(.spring(response: 0.45, dampingFraction: 0.82)) {
+                    showsignin = true
                 }
+            } label: {
+                Label("Start with Clothy", systemImage: "arrow.forward")
+                    .font(.headline)
+                    .foregroundStyle(.white)
+                    .padding(.horizontal, 34)
+                    .frame(height: 64)
+                    .background(
+                        LinearGradient(
+                            colors: [Color(hex: "5f9fff"), Color(hex: "7d6cff")],
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
+                    )
+                    .clipShape(Capsule())
+                    .shadow(color: Color(hex: "5f9fff").opacity(0.35), radius: 18, x: 0, y: 9)
+            }
+            .buttonStyle(.plain)
 
             Text("©Haithem&mtar.")
                 .font(.footnote)
@@ -443,14 +442,28 @@ struct ContentView: View {
     }
 
     private var background: some View {
-        RiveViewModel(fileName: "shapes").view()
-            .ignoresSafeArea()
-            .blur(radius: 30)
-            .background(
-                Image("Spline")
-                    .blur(radius: 50)
-                    .offset(x: 200, y: 100)
+        ZStack {
+            LinearGradient(
+                colors: [
+                    Color(hex: "F5F7FF"),
+                    Color(hex: "E8EEFF"),
+                    Color(hex: "F8EFFF")
+                ],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
             )
+            Circle()
+                .fill(Color(hex: "8BB8FF").opacity(0.38))
+                .frame(width: 280, height: 280)
+                .blur(radius: 55)
+                .offset(x: 130, y: -220)
+            Circle()
+                .fill(Color(hex: "BCA4FF").opacity(0.34))
+                .frame(width: 260, height: 260)
+                .blur(radius: 60)
+                .offset(x: -140, y: 220)
+        }
+        .ignoresSafeArea()
     }
 }
 
