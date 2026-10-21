@@ -61,7 +61,7 @@ struct ForgetPasswordView: View {
                 .customTextField()
                 .keyboardType(.emailAddress)
             Button{
-                Vm.forgotpassword(email: email.firstUppercased, completed: { (success) in
+                Vm.forgotpassword(email: email.trimmingCharacters(in: .whitespacesAndNewlines).lowercased(), completed: { (success) in
                     if(success){
                         code.toggle()
                         findmail.toggle()
@@ -92,12 +92,15 @@ struct ForgetPasswordView: View {
             + Text(unvalidcode ? " is wrong" : "")
                 .font(.subheadline)
                 .foregroundColor(.secondary)
+            Text("Demo reset code: 123456")
+                .font(.caption)
+                .foregroundStyle(.secondary)
             TextField("", text: $recupcode)
                 .customTextField(image:Image(systemName: "keyboard"))
                 .keyboardType(.numberPad)
                 
             Button{
-                Vm.forgotpasswordcode(email: email, code: Int(recupcode) ?? 0, completed:  { (success) in
+                Vm.forgotpasswordcode(email: email.trimmingCharacters(in: .whitespacesAndNewlines).lowercased(), code: Int(recupcode) ?? 0, completed:  { (success) in
                     if (success){
                         comfirmpw.toggle()
                         code.toggle()
@@ -147,7 +150,7 @@ struct ForgetPasswordView: View {
                 if (!Vm.isValidPassword(password: password)){
                     notstrongpass = true
                 } else{
-                    Vm.setnewpw(email: email, newpw: password, completed:  { (success) in
+                    Vm.setnewpw(email: email.trimmingCharacters(in: .whitespacesAndNewlines).lowercased(), newpw: password, completed:  { (success) in
                         if (success){
                            // comfirmpw.toggle()
                            // code.toggle()
