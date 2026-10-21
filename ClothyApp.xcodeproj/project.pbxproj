@@ -9,6 +9,10 @@
 		A10000000000000000000001 /* RiveRuntime in Frameworks */ = {isa = PBXBuildFile; productRef = A10000000000000000000021 /* RiveRuntime */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXFileReference section */
+		A10000000000000000000006 /* ClothyApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ClothyApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		A10000000000000000000002 /* ClothyApp source root */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
