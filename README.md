@@ -23,7 +23,7 @@ You can also create a local demo account through Sign Up. Accounts are stored lo
 ## Implemented offline features
 
 - **Discover:** entry points to wardrobe, outfit creation, and exchange listings.
-- **Wardrobe:** add clothing items, attach photos from the photo library, categorize and tag by color, season and occasion, search items, and delete items.
+- **Wardrobe:** add clothing items, attach photos from the photo library, categorize and tag by color, season and occasion, search items, edit details, and delete items.
 - **Outfit ideas:** generate rule-based combinations from saved items by occasion and season, then save favorite combinations.
 - **Saved outfits:** view outfit combinations and their pieces, and remove saved outfits.
 - **Clothing exchange demo:** create and remove local listings with price, condition and description.
