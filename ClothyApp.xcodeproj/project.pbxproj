@@ -7,6 +7,7 @@
 
 /* Begin PBXBuildFile section */
 		A10000000000000000000001 /* RiveRuntime in Frameworks */ = {isa = PBXBuildFile; productRef = A10000000000000000000021 /* RiveRuntime */; };
+		A10000000000000000000022 /* RiveRuntime in Embed Frameworks */ = {isa = PBXBuildFile; productRef = A10000000000000000000021 /* RiveRuntime */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +32,20 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		A10000000000000000000011 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				A10000000000000000000022 /* RiveRuntime in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXGroup section */
 		A10000000000000000000004 = {
@@ -58,6 +73,7 @@
 			buildPhases = (
 				A10000000000000000000009 /* Sources */,
 				A10000000000000000000003 /* Frameworks */,
+				A10000000000000000000011 /* Embed Frameworks */,
 				A1000000000000000000000A /* Resources */,
 			);
 			buildRules = ();
