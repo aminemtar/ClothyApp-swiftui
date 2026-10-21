@@ -1,39 +1,51 @@
-# ClothyApp SwiftUI — Offline Demo
+# ClothyApp SwiftUI — Offline-first demo
 
-This branch is a **local-only demo** of Clothy. It does not require your backend, API key, or network API calls. The demo uses native SwiftUI views and has no third-party package dependencies.
+Clothy is a wardrobe and outfit-planning app. This branch brings the main app experience into a native SwiftUI project that can be explored without a backend, API key, or network connection. It has no third-party package dependencies.
 
-## Open and run the app
+## Open and run
 
-1. Check out this branch:
+1. Fetch and check out this branch:
    `git fetch origin`
    `git checkout feature/offline-static-demo`
-2. Open **`ClothyApp.xcodeproj`** in Xcode (open the project file, not the GitHub page or repository folder).
-3. In the top toolbar, choose the **ClothyApp** scheme and your iPhone or an iPhone Simulator.
-4. Click the triangular **Run ▶** button, or choose **Product → Run** (⌘R).
+2. Open **ClothyApp.xcodeproj** in Xcode.
+3. Select the **ClothyApp** scheme and an iPhone or iPhone Simulator.
+4. Press **Run** (⌘R).
 
-If you do not see the Run button, make sure the `.xcodeproj` is open in Xcode rather than the folder in VS Code/Finder. 
+The project targets iOS 16 or later.
 
 ## Demo sign-in
 
 - **Email:** `demo@clothy.app`
 - **Password:** `Clothy123`
 
-You can also create a local demo account through **Sign Up**. Accounts are stored on the device in `UserDefaults` and are only intended for exploring the prototype.
+You can also create a local demo account through Sign Up. Accounts are stored locally in `UserDefaults`; they are for prototype exploration and are not secure production authentication.
 
-## What you can explore
+## Implemented offline features
 
-- **Discover:** sample outfit inspiration and featured pieces.
-- **Wardrobe:** example clothing categories and sample items.
-- **Trade:** sample listings for a clothing-exchange experience.
-- **Profile:** mock profile statistics and sign-out.
-- **Authentication:** local sign-in, sign-up, and password-reset flow.
+- **Discover:** entry points to wardrobe, outfit creation, and exchange listings.
+- **Wardrobe:** add clothing items, attach photos from the photo library, categorize and tag by color, season and occasion, search items, and delete items.
+- **Outfit ideas:** generate rule-based combinations from saved items by occasion and season, then save favorite combinations.
+- **Saved outfits:** view outfit combinations and their pieces, and remove saved outfits.
+- **Clothing exchange demo:** create and remove local listings with price, condition and description.
+- **Profile:** local wardrobe/outfit/listing counts and a clear-local-data action.
+- **Authentication UI:** local sign-in, sign-up and password-reset flow.
+- **Persistence:** clothing, photo data, outfits and demo listings are saved on the device and remain available after restarting the app.
+
+Sample wardrobe items are seeded on first launch so the app is not empty. Add, edit through deleting/re-adding, or remove items to explore your own collection.
 
 ## Password reset
 
-For the local demo, use reset code `123456`. This code is intentionally fixed and is not sent by email.
+For this local demo, use reset code `123456`. The code is fixed and is not sent by email.
 
-## Important limitations
+## What is not connected
 
-All clothing listings, outfit suggestions, prices, and profile statistics are static sample data. Sign-in and password reset are simulated locally. No real account is created, no email is sent, and no trading, payment, weather, image recognition, or backend service is connected.
+This is a deliberately offline-first demo, not a production marketplace:
 
-This branch is intended for UI/feature exploration only. The production/API implementation on `main` is not modified by this branch.
+- **Live weather:** no network weather service is called. Outfit ideas can be filtered by a manually selected season instead.
+- **Automatic clothing recognition:** photos are saved, but a computer-vision model does not automatically identify garment type, color, or attributes. Categorization is manual.
+- **Real AI stylist:** outfit combinations use local category/occasion/season rules, not a generative AI model.
+- **Real community trading:** listings are private to the device. Other users cannot discover them; chat, exchange requests, payment and delivery are not implemented.
+- **Cloud accounts and sync:** login and password recovery are simulated locally. No email is sent, and local accounts are not synced or backed up.
+- **Production security:** local demo credentials are not suitable for real user accounts.
+
+The branch is intended to make the app's main flows testable without a backend. It does not modify `main`.
