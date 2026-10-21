@@ -29,6 +29,7 @@ struct SignUpView: View {
     @State var wrongfirstname = false
     @State var wronglastname = false
     @State var wrongpseudo = false
+    @State private var registrationError = ""
 
 
     var body: some View {
@@ -195,6 +196,9 @@ struct SignUpView: View {
             .accentColor(Color(hex: "5f9fff"))
             .padding(15)
 
+            if !registrationError.isEmpty {
+                Text(registrationError).font(.footnote).foregroundStyle(.red).frame(maxWidth: .infinity, alignment: .leading)
+            }
             HStack{
                 Button{
  
@@ -212,35 +216,48 @@ struct SignUpView: View {
                     .shadow(color: Color(hex: "5f9fff").opacity(0.5), radius: 20, x: 0, y: 10)
                 }
                 Button{
-                    if(password != comfirmpassword){
-                        comfirmingpw = "and comfirm password should be identic"
-                        comfirmingpw2 = "and password should be identic"
-
-                        
+                    registrationError = ""
+                    guard password == comfirmpassword else {
+                        registrationError = "Passwords do not match."
+                        return
                     }
-                   else{
-                        let user = User(firstname: firstname, lastname: lastname, pseudo: pseudo, birthdate: DateUtils.formatFromDate(date: birthdate), imageF: "", email: email, phone: Int(phone) ?? 000, password: password, isVerified: false, preference: "hiphop", gender: gender, id: "", createdAt: "", updatedAt: "", v: 1)
-                        Vm.inscription(user: user ,completed: { (success) in
-                            
-                            if success {
-                                
-                                withAnimation{
-                                    general.toggle()
-                                    details.toggle()
-                                    showSignUp.toggle()
-                                    showSignIn.toggle()
-                                }
-                                
-                                
-                            } else {
-                                print("fama mochkla ")
-                                
-                                
+                    guard Vm.isValidPassword(password: password) else {
+                        registrationError = "Use at least 8 characters with uppercase, lowercase and a number."
+                        return
+                    }
+                    guard phone.filter(\.isNumber).count >= 7 else {
+                        registrationError = "Enter a valid phone number."
+                        return
+                    }
+                    let user = User(
+                        firstname: firstname.trimmingCharacters(in: .whitespacesAndNewlines),
+                        lastname: lastname.trimmingCharacters(in: .whitespacesAndNewlines),
+                        pseudo: pseudo.trimmingCharacters(in: .whitespacesAndNewlines),
+                        birthdate: DateUtils.formatFromDate(date: birthdate),
+                        imageF: "",
+                        email: email.trimmingCharacters(in: .whitespacesAndNewlines).lowercased(),
+                        phone: Int(phone) ?? 0,
+                        password: password,
+                        isVerified: false,
+                        preference: "hiphop",
+                        gender: gender,
+                        id: "",
+                        createdAt: "",
+                        updatedAt: "",
+                        v: 1
+                    )
+                    Vm.inscription(user: user) { success in
+                        if success {
+                            withAnimation {
+                                general = true
+                                details = false
+                                showSignUp = false
+                                showSignIn = true
                             }
-                            
-                        })
+                        } else {
+                            registrationError = "This email is already registered. Please sign in instead."
+                        }
                     }
-
                 }label: {
                     Label("sign Up", systemImage: "arrow.right")
                         .font(.headline)
