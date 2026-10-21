@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 
 final class UsersViewModel: ObservableObject {
     private struct LocalAccount: Codable {
@@ -99,7 +100,7 @@ final class UsersViewModel: ObservableObject {
             $0.email.lowercased() == normalizedEmail && $0.password == password
         }
 
-        if let account {
+        if let account = account {
             UserDefaults.standard.set(UUID().uuidString, forKey: "session")
             UserDefaults.standard.set(account.pseudo, forKey: "clothy.demo.currentUser")
             completed(true)
