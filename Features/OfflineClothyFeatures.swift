@@ -127,9 +127,11 @@ final class ClothyStore: ObservableObject {
 
     func item(for id: UUID) -> ClosetItem? { items.first { $0.id == id } }
 
-    func outfitSuggestion(occasion: String) -> [ClosetItem] {
-        let matching = items.filter { $0.occasion == occasion || $0.occasion == "Everyday" }
-        let source = matching.isEmpty ? items : matching
+    func outfitSuggestion(occasion: String, season: String) -> [ClosetItem] {
+        let seasonal = items.filter { season == "All season" || $0.season == season || $0.season == "All season" }
+        let seasonSource = seasonal.isEmpty ? items : seasonal
+        let matching = seasonSource.filter { $0.occasion == occasion || $0.occasion == "Everyday" }
+        let source = matching.isEmpty ? seasonSource : matching
         var chosen: [ClosetItem] = []
         for category in ["Tops", "Bottoms", "Dresses", "Outerwear", "Shoes", "Accessories"] {
             if let item = source.first(where: { $0.category == category }) { chosen.append(item) }
@@ -243,6 +245,7 @@ struct AddClothingView: View {
 struct OutfitGeneratorView: View {
     @ObservedObject var store: ClothyStore
     @State private var occasion = "Everyday"
+    @State private var season = "All season"
     @State private var generated: [ClosetItem] = []
     @State private var showSavedMessage = false
 
@@ -255,8 +258,12 @@ struct OutfitGeneratorView: View {
                 ForEach(ClothyStore.occasions, id: \.self) { Text($0) }
             }
             .pickerStyle(.menu)
+            Picker("Season", selection: $season) {
+                ForEach(ClothyStore.seasons, id: \.self) { Text($0) }
+            }
+            .pickerStyle(.menu)
             Button {
-                generated = store.outfitSuggestion(occasion: occasion)
+                generated = store.outfitSuggestion(occasion: occasion, season: season)
                 showSavedMessage = false
             } label: {
                 Label("Generate outfit", systemImage: "sparkles")
@@ -361,7 +368,7 @@ struct WardrobeView: View {
         Button { category = title } label: {
             Text(title).font(.caption.weight(.semibold)).padding(.horizontal, 13).padding(.vertical, 9)
                 .background(category == title ? Color(hex: "5f9fff") : Color(uiColor: .secondarySystemGroupedBackground))
-                .foregroundStyle(category == title ? .white : .primary).clipShape(Capsule())
+                .foregroundStyle(category == title ? Color.white : Color.primary).clipShape(Capsule())
         }
     }
 }
