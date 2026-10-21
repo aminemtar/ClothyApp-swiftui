@@ -1,5 +1,8 @@
 import Foundation
 import SwiftUI
+import Combine
+import PhotosUI
+import UIKit
 
 struct ClosetItem: Identifiable, Codable, Equatable {
     var id: UUID = UUID()
@@ -42,9 +45,9 @@ final class ClothyStore: ObservableObject {
     private let listingsKey = "clothy.offline.listings.v1"
 
     init() {
-        items = Self.load([ClosetItem].self, key: itemsKey)
-        outfits = Self.load([SavedOutfit].self, key: outfitsKey)
-        listings = Self.load([ClosetListing].self, key: listingsKey)
+        items = Self.load([ClosetItem].self, key: itemsKey, fallback: [])
+        outfits = Self.load([SavedOutfit].self, key: outfitsKey, fallback: [])
+        listings = Self.load([ClosetListing].self, key: listingsKey, fallback: [])
         if items.isEmpty && UserDefaults.standard.bool(forKey: "clothy.offline.seeded") == false {
             items = Self.sampleItems
             persist(items, key: itemsKey)
@@ -52,9 +55,9 @@ final class ClothyStore: ObservableObject {
         }
     }
 
-    private static func load<T: Decodable>(_ type: T.Type, key: String) -> T {
+    private static func load<T: Decodable>(_ type: T.Type, key: String, fallback: T) -> T {
         guard let data = UserDefaults.standard.data(forKey: key),
-              let value = try? JSONDecoder().decode(type, from: data) else { return (try? JSONDecoder().decode(type, from: Data("[]".utf8))) ?? ([] as! T) }
+              let value = try? JSONDecoder().decode(type, from: data) else { return fallback }
         return value
     }
 
@@ -261,7 +264,7 @@ struct OutfitGeneratorView: View {
                     .background(Color(hex: "5f9fff")).foregroundStyle(.white).clipShape(RoundedRectangle(cornerRadius: 16))
             }
             if generated.isEmpty {
-                ContentUnavailableView("Ready to style?", systemImage: "tshirt", description: Text("Choose an occasion and generate an outfit from your saved clothing items."))
+                EmptyFeatureState(title: "Ready to style?", systemImage: "tshirt", message: "Choose an occasion and generate an outfit from your saved clothing items.")
                     .frame(maxWidth: .infinity, minHeight: 170)
             } else {
                 VStack(spacing: 10) {
@@ -327,7 +330,7 @@ struct WardrobeView: View {
                 }
             }
             if filtered.isEmpty {
-                ContentUnavailableView("No clothing found", systemImage: "tshirt", description: Text("Add an item or change your search."))
+                EmptyFeatureState(title: "No clothing found", systemImage: "tshirt", message: "Add an item or change your search.")
                     .frame(maxWidth: .infinity, minHeight: 200)
             } else {
                 LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 14) {
@@ -369,7 +372,7 @@ struct SavedOutfitsView: View {
         VStack(alignment: .leading, spacing: 16) {
             Text("Saved outfits").font(.system(size: 29, weight: .bold, design: .rounded))
             if store.outfits.isEmpty {
-                ContentUnavailableView("No saved outfits yet", systemImage: "heart", description: Text("Generate an outfit and save it to keep your favorite combinations here."))
+                EmptyFeatureState(title: "No saved outfits yet", systemImage: "heart", message: "Generate an outfit and save it to keep your favorite combinations here.")
             } else {
                 ForEach(store.outfits) { outfit in
                     VStack(alignment: .leading, spacing: 12) {
@@ -425,7 +428,7 @@ struct TradeView: View {
             Label("Offline demo: listings are private to this device. Other users cannot see them and no messages, payments, or exchanges are processed.", systemImage: "info.circle")
                 .font(.footnote).foregroundStyle(.secondary).padding(12).background(Color.blue.opacity(0.07)).clipShape(RoundedRectangle(cornerRadius: 12))
             if store.listings.isEmpty {
-                ContentUnavailableView("No listings yet", systemImage: "arrow.left.arrow.right", description: Text("Create a local listing to try the trading flow."))
+                EmptyFeatureState(title: "No listings yet", systemImage: "arrow.left.arrow.right", message: "Create a local listing to try the trading flow.")
             } else {
                 ForEach(store.listings) { listing in
                     HStack(spacing: 12) {
@@ -524,5 +527,25 @@ struct ClothyProfileView: View {
             Text(value).font(.title2.bold())
             Text(title).font(.caption).foregroundStyle(.secondary)
         }.frame(maxWidth: .infinity, alignment: .leading).padding(12).background(.background).clipShape(RoundedRectangle(cornerRadius: 16))
+    }
+}
+
+
+struct EmptyFeatureState: View {
+    let title: String
+    let systemImage: String
+    let message: String
+
+    var body: some View {
+        VStack(spacing: 10) {
+            Image(systemName: systemImage)
+                .font(.system(size: 34))
+                .foregroundStyle(Color(hex: "5f9fff"))
+                .padding(.bottom, 4)
+            Text(title).font(.headline)
+            Text(message).font(.subheadline).foregroundStyle(.secondary).multilineTextAlignment(.center)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(24)
     }
 }
