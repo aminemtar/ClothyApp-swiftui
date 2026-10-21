@@ -61,7 +61,7 @@ struct ForgetPasswordView: View {
                 .customTextField()
                 .keyboardType(.emailAddress)
             Button{
-                Vm.forgotpassword(email: email.firstUppercased, completed: { (success) in
+                Vm.forgotpassword(email: email.trimmingCharacters(in: .whitespacesAndNewlines).lowercased(), completed: { (success) in
                     if(success){
                         code.toggle()
                         findmail.toggle()
