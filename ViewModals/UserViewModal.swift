@@ -57,13 +57,11 @@ final class UsersViewModel : ObservableObject{
             switch response.result {
                 
             case .success:
-                let jsonData = JSON(response.data!)
-                print(jsonData)
+                let jsonData = JSON(response.data ?? Data())
                 //User().pseudo = jsonData["pseudo"].stringValue
            //     let utilisateur = self.makeItem(jsonItem: jsonData["userr"])
                 UserDefaults.standard.setValue(jsonData["_id"].stringValue, forKey: "session")
                 //Bool  //setObject
-                print( UserDefaults.standard.string(forKey: "session") ?? "didnt store :ccccc ")
 
                 // UserDefaults.standard.setValue(utilisateur._id, forKey: "_id")
                 //       UserDefaults.standard.setValue(self.utilisateur.firstname, forKey: "firstname")
@@ -76,7 +74,6 @@ final class UsersViewModel : ObservableObject{
               //  self.isAuthenticated = true
                 completed(true)
             case let .failure(error):
-                debugPrint(error)
                 completed(false)
             }
         }
@@ -101,11 +98,9 @@ final class UsersViewModel : ObservableObject{
         .responseData { response in
             switch response.result {
             case .success:
-                print("Validation Successful")
                 completed(true)
                 
             case let .failure(error):
-                print(error)
                 completed(false)
             }
         }
@@ -119,7 +114,6 @@ final class UsersViewModel : ObservableObject{
         .responseData { response in
             switch response.result {
             case .success:
-                print("mail is sent")
                 completed(true)
             case let .failure(error):
                 print(error)
@@ -136,7 +130,6 @@ final class UsersViewModel : ObservableObject{
         .responseData { response in
             switch response.result {
             case .success:
-                print("code is true")
                 completed(true)
             case let .failure(error):
                 print(error)
