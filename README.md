@@ -1,6 +1,6 @@
 # ClothyApp SwiftUI — Offline Demo
 
-This branch is a **local-only demo** of Clothy. It does not require your backend, API key, or network API calls. The Xcode project resolves the Rive Swift package dependency when you first open the project, so internet access may be needed for that initial package download.
+This branch is a **local-only demo** of Clothy. It does not require your backend, API key, or network API calls. The demo uses native SwiftUI views and has no third-party package dependencies.
 
 ## Open and run the app
 
@@ -8,11 +8,10 @@ This branch is a **local-only demo** of Clothy. It does not require your backend
    `git fetch origin`
    `git checkout feature/offline-static-demo`
 2. Open **`ClothyApp.xcodeproj`** in Xcode (open the project file, not the GitHub page or repository folder).
-3. Wait for Xcode to resolve the `RiveRuntime` Swift package.
-4. In the top toolbar, choose the **ClothyApp** scheme and an iPhone Simulator (for example, iPhone 16).
-5. Click the triangular **Run ▶** button, or choose **Product → Run** (⌘R).
+3. In the top toolbar, choose the **ClothyApp** scheme and your iPhone or an iPhone Simulator.
+4. Click the triangular **Run ▶** button, or choose **Product → Run** (⌘R).
 
-If you do not see the Run button, make sure the `.xcodeproj` is open in Xcode rather than the folder in VS Code/Finder. If package resolution fails, choose **File → Packages → Resolve Package Versions**.
+If you do not see the Run button, make sure the `.xcodeproj` is open in Xcode rather than the folder in VS Code/Finder. 
 
 ## Demo sign-in
 
