@@ -14,6 +14,8 @@ struct SignInView: View {
     @Binding var forgetpw : Bool
     @Binding var showSignUp : Bool
     @Binding var showsignin : Bool
+    @Binding var isLoggedIn: Bool
+    @State private var authError = false
     @StateObject private var Vm = UsersViewModel()
     let confetti = RiveViewModel(fileName: "confetti", stateMachineName: "State Machine 1")
     let check = RiveViewModel(fileName: "check", stateMachineName: "State Machine 1")
@@ -38,23 +40,25 @@ struct SignInView: View {
                 SecureField("", text: $password)
                     .customTextField(image: Image(systemName: "lock"))
             }
+            if authError {
+                Text("Email or password is incorrect. Try the demo account below.")
+                    .font(.footnote)
+                    .foregroundStyle(.red)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
             Button {
-                let newmail = email.lowercased()
-                Vm.connexion(email: newmail, password: password,completed: { (reponse)  in
-
-                if (reponse) {
-                    //logIn()
-   
-                   print(password)
-                    print(newmail)
-                    print("connected")
-                } else {
-                    print(password)
-                    print(email)
-                    print("ERROR CANT CONNECT")
-                }
-
-            })
+                let newmail = email.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+                Vm.connexion(email: newmail, password: password, completed: { response in
+                    if response {
+                        authError = false
+                        withAnimation(.spring()) {
+                            isLoggedIn = true
+                            showsignin = false
+                        }
+                    } else {
+                        authError = true
+                    }
+                })
             
         }
         
@@ -69,6 +73,14 @@ struct SignInView: View {
                 .cornerRadius(8, corners: [.topLeft])
             .shadow(color: Color(hex: "5f9fff").opacity(0.5), radius: 20, x: 0, y: 10)
     }
+            VStack(spacing: 5) {
+                Text("Demo account")
+                    .font(.caption.weight(.semibold))
+                    .foregroundStyle(.secondary)
+                Text("demo@clothy.app  ·  Clothy123")
+                    .font(.caption.monospaced())
+                    .textSelection(.enabled)
+            }
             HStack{
                 Text("Forgot password?  Reset")
                     .font(.subheadline)
@@ -161,6 +173,6 @@ struct SignInView: View {
 
 struct SignInView_Previews: PreviewProvider {
     static var previews: some View {
-        SignInView(forgetpw: .constant(false), showSignUp: .constant(false), showsignin: .constant(false))
+        SignInView(forgetpw: .constant(false), showSignUp: .constant(false), showsignin: .constant(false), isLoggedIn: .constant(false))
     }
 }
