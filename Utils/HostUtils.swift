@@ -2,9 +2,13 @@
 //  HostUtils.swift
 //  ClothyApp
 //
-//  Created by haithem ghattas on 17/12/2022.
+//  The offline demo does not configure or call an API host.
 //
 
-class HostUtils {
-    var HOST_URL = "http:/192.168.1.7:9090/"
+import Foundation
+
+/// Kept as a compatibility shell for older project references.
+/// All demo authentication and content are stored locally.
+final class HostUtils {
+    // Intentionally no host URL in offline demo mode.
 }
