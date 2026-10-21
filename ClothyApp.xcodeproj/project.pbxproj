@@ -6,8 +6,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A10000000000000000000001 /* RiveRuntime in Frameworks */ = {isa = PBXBuildFile; productRef = A10000000000000000000021 /* RiveRuntime */; };
-		A10000000000000000000022 /* RiveRuntime in Embed Frameworks */ = {isa = PBXBuildFile; productRef = A10000000000000000000021 /* RiveRuntime */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,26 +24,10 @@
 		A10000000000000000000003 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
-			files = (
-				A10000000000000000000001 /* RiveRuntime in Frameworks */,
-			);
+			files = ();
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		A10000000000000000000011 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				A10000000000000000000022 /* RiveRuntime in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXGroup section */
 		A10000000000000000000004 = {
@@ -73,7 +55,6 @@
 			buildPhases = (
 				A10000000000000000000009 /* Sources */,
 				A10000000000000000000003 /* Frameworks */,
-				A10000000000000000000011 /* Embed Frameworks */,
 				A1000000000000000000000A /* Resources */,
 			);
 			buildRules = ();
@@ -82,9 +63,7 @@
 				A10000000000000000000002 /* ClothyApp source root */,
 			);
 			name = ClothyApp;
-			packageProductDependencies = (
-				A10000000000000000000021 /* RiveRuntime */,
-			);
+			packageProductDependencies = ();
 			productName = ClothyApp;
 			productReference = A10000000000000000000006 /* ClothyApp.app */;
 			productType = "com.apple.product-type.application";
@@ -114,9 +93,7 @@
 			);
 			mainGroup = A10000000000000000000004;
 			minimizedProjectReferenceProxies = 1;
-			packageReferences = (
-				A10000000000000000000020 /* XCRemoteSwiftPackageReference "rive-ios" */,
-			);
+			packageReferences = ();
 			preferredProjectObjectVersion = 77;
 			productRefGroup = A10000000000000000000005 /* Products */;
 			projectDirPath = "";
@@ -255,24 +232,6 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCRemoteSwiftPackageReference section */
-		A10000000000000000000020 /* XCRemoteSwiftPackageReference "rive-ios" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/rive-app/rive-ios.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.0.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		A10000000000000000000021 /* RiveRuntime */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = A10000000000000000000020 /* XCRemoteSwiftPackageReference "rive-ios" */;
-			productName = RiveRuntime;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = A1000000000000000000000B /* Project object */;
 }
