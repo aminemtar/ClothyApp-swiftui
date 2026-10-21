@@ -45,13 +45,9 @@ struct SignInView: View {
                 if (reponse) {
                     //logIn()
    
-                   print(password)
-                    print(newmail)
-                    print("connected")
+                   // Authentication succeeded. The caller can update navigation state.
                 } else {
-                    print(password)
-                    print(email)
-                    print("ERROR CANT CONNECT")
+                    // Keep credentials out of logs; present a user-facing error instead.
                 }
 
             })
