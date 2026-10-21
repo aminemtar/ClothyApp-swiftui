@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import RiveRuntime
 struct SignInView: View {
     @State var isLoading = false
     @State var email : String = ""
@@ -17,8 +16,6 @@ struct SignInView: View {
     @Binding var isLoggedIn: Bool
     @State private var authError = false
     @StateObject private var Vm = UsersViewModel()
-    let confetti = RiveViewModel(fileName: "confetti", stateMachineName: "State Machine 1")
-    let check = RiveViewModel(fileName: "check", stateMachineName: "State Machine 1")
 
     
     var body: some View {
