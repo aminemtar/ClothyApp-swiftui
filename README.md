@@ -1,30 +1,28 @@
-# ClothyApp-swiftui
+# ClothyApp SwiftUI — Offline Demo
 
-Clothy is an iOS application that helps you put together the perfect outfit. Simply input your clothing items and Clothy will suggest coordinating outfits for any occasion.
+This branch is a **local-only demo** of Clothy. It does not require a backend, API key, or network connection.
 
-## Features
-- Detetcts outfit type
-- Suggests outfits based on weather
-- Allows you to save and label your clothes
-- Gives you the option to trade your clothes with other persons
+## Demo sign-in
 
-## Installation
+- **Email:** `demo@clothy.app`
+- **Password:** `Clothy123`
 
-To install Clothy, simply download the app from the App Store.
+You can also create a local demo account through **Sign Up**. Accounts are stored on the device in `UserDefaults` and are only intended for exploring the prototype.
 
-## How to use
+## What you can explore
 
-Using Clothy is easy:
+- **Discover:** sample outfit inspiration and featured pieces.
+- **Wardrobe:** example clothing categories and sample items.
+- **Trade:** sample listings for a clothing-exchange experience.
+- **Profile:** mock profile statistics and sign-out.
+- **Authentication:** local sign-in, sign-up, and password-reset flow.
 
-1. Input your clothing items by taking photos or adding them from your camera roll
-2. Select an occasion or activity
-3. Clothy will generate outfit suggestions for you
+## Password reset
 
-## Support
+For the local demo, use reset code `123456`. This code is intentionally fixed and is not sent by email.
 
-If you have any questions or issues with Clothy, please don't hesitate to contact us at haithem.ghattas@esprit.tn or mohamedamine.mtar@esprit.tn. We're here to help!
+## Important limitations
 
-# Credits
+All clothing listings, outfit suggestions, prices, and profile statistics are static sample data. Sign-in and password reset are simulated locally. No real account is created, no email is sent, and no trading, payment, weather, image recognition, or backend service is connected.
 
-haithem ghattas
-mohamed amine mtar 
+This branch is intended for UI/feature exploration only. The production/API implementation is not modified by this branch.
