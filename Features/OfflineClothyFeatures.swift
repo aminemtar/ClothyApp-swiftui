@@ -94,6 +94,12 @@ final class ClothyStore: ObservableObject {
         persist(listings, key: listingsKey)
     }
 
+    func updateItem(_ item: ClosetItem) {
+        guard let index = items.firstIndex(where: { $0.id == item.id }) else { return }
+        items[index] = item
+        persist(items, key: itemsKey)
+    }
+
     func deleteItem(id: UUID) {
         items.removeAll { $0.id == id }
         persist(items, key: itemsKey)
@@ -185,6 +191,7 @@ struct ClothingThumbnail: View {
 struct AddClothingView: View {
     @Environment(\.dismiss) private var dismiss
     @ObservedObject var store: ClothyStore
+    var existingItem: ClosetItem? = nil
     @State private var name = ""
     @State private var category = "Tops"
     @State private var color = ""
@@ -194,6 +201,18 @@ struct AddClothingView: View {
     @State private var imageData: Data?
     @State private var photoItem: PhotosPickerItem?
     @State private var validationMessage = ""
+
+    init(store: ClothyStore, item: ClosetItem? = nil) {
+        self.store = store
+        self.existingItem = item
+        _name = State(initialValue: item?.name ?? "")
+        _category = State(initialValue: item?.category ?? "Tops")
+        _color = State(initialValue: item?.color ?? "")
+        _season = State(initialValue: item?.season ?? "All season")
+        _occasion = State(initialValue: item?.occasion ?? "Everyday")
+        _notes = State(initialValue: item?.notes ?? "")
+        _imageData = State(initialValue: item?.imageData)
+    }
 
     var body: some View {
         NavigationStack {
@@ -210,7 +229,11 @@ struct AddClothingView: View {
                         }
                     }
                     .onChange(of: photoItem) { newValue in
-                        Task { imageData = try? await newValue?.loadTransferable(type: Data.self) }
+                        Task {
+                            if let data = try? await newValue?.loadTransferable(type: Data.self) {
+                                imageData = Self.optimizedImageData(data)
+                            }
+                        }
                     }
                 }
                 Section("Clothing details") {
@@ -225,7 +248,7 @@ struct AddClothingView: View {
                     Text(validationMessage).foregroundStyle(.red)
                 }
             }
-            .navigationTitle("Add to wardrobe")
+            .navigationTitle(existingItem == nil ? "Add to wardrobe" : "Edit clothing")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
@@ -233,12 +256,23 @@ struct AddClothingView: View {
                     Button("Save") {
                         let cleanName = name.trimmingCharacters(in: .whitespacesAndNewlines)
                         guard !cleanName.isEmpty else { validationMessage = "Enter a name for this item."; return }
-                        store.addItem(ClosetItem(name: cleanName, category: category, color: color.trimmingCharacters(in: .whitespacesAndNewlines), season: season, occasion: occasion, notes: notes, imageData: imageData))
+                        let item = ClosetItem(id: existingItem?.id ?? UUID(), name: cleanName, category: category, color: color.trimmingCharacters(in: .whitespacesAndNewlines), season: season, occasion: occasion, notes: notes, imageData: imageData, createdAt: existingItem?.createdAt ?? Date())
+                        if existingItem == nil { store.addItem(item) } else { store.updateItem(item) }
                         dismiss()
                     }
                 }
             }
         }
+    }
+
+    private static func optimizedImageData(_ data: Data) -> Data? {
+        guard let image = UIImage(data: data) else { return data }
+        let maxDimension: CGFloat = 1200
+        let scale = min(1, maxDimension / max(image.size.width, image.size.height))
+        let size = CGSize(width: image.size.width * scale, height: image.size.height * scale)
+        let renderer = UIGraphicsImageRenderer(size: size)
+        let resized = renderer.image { _ in image.draw(in: CGRect(origin: .zero, size: size)) }
+        return resized.jpegData(compressionQuality: 0.78) ?? data
     }
 }
 
@@ -307,6 +341,7 @@ struct WardrobeView: View {
     @State private var searchText = ""
     @State private var category = "All"
     @State private var showingAdd = false
+    @State private var itemToEdit: ClosetItem?
 
     private var filtered: [ClosetItem] {
         store.items.filter { item in
@@ -351,6 +386,7 @@ struct WardrobeView: View {
                                 Text(item.season).font(.caption2).foregroundStyle(.secondary)
                                 Spacer()
                                 Menu {
+                                    Button { itemToEdit = item } label: { Label("Edit item", systemImage: "pencil") }
                                     Button(role: .destructive) { store.deleteItem(id: item.id) } label: { Label("Delete item", systemImage: "trash") }
                                 } label: { Image(systemName: "ellipsis.circle").foregroundStyle(.secondary) }
                             }
@@ -362,6 +398,7 @@ struct WardrobeView: View {
             Spacer(minLength: 0)
         }
         .sheet(isPresented: $showingAdd) { AddClothingView(store: store) }
+        .sheet(item: $itemToEdit) { item in AddClothingView(store: store, item: item) }
     }
 
     @ViewBuilder private func categoryChip(_ title: String) -> some View {
