@@ -5,7 +5,7 @@
 
 import Foundation
 
-enum DateUtils {
+class DateUtils {
     /// Parses ISO-8601 dates returned by the API.
     /// Returns nil for invalid input instead of silently substituting "now".
     static func formatFromString(string: String) -> Date? {
@@ -60,7 +60,7 @@ enum DateUtils {
         return formatter
     }
 
-    static func secondsToHoursMinutesSeconds(_ seconds: Int) -> (Int, Int, Int) {
+    func secondsToHoursMinutesSeconds(_ seconds: Int) -> (Int, Int, Int) {
         (seconds / 3600, (seconds % 3600) / 60, seconds % 60)
     }
 }
